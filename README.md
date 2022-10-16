@@ -9,8 +9,37 @@ This Unity project is a work in progress, which code files are still confidentia
 A real time editor would be appropriate with this situation, but I know from experience I would spend too much time creating the level by hand in Unity. I prefer to draw it in pixelart and generate it, even if it means some afterwards polishing by hand or with Blender.
 
 =====================
-Latest : Version 0.2
+Latest : Version 0.3
 =====================
+
+Les textures sont désormais générées selon une image, la texture map. Elles sont extraites d'un tileset composé entre autre d'un set de textures par défaut (ici l'herbe verte et ses variations), de plusieurs variantes de sol (ici l'herbe jaune et la terre avec leurs variations) et des transitions entre deux textures (trois au maximum sur mon tileset, mais rien n'empêche d'en ajouter, le script peut en accepter autant que nécessaire). Les transitions sont des textures transparentes permettant de voir une autre texture de sol en dessous. Le nombre de variations de chaque texture ainsi que leurs chances d'apparition individuelles sont paramétrables dans le script "Texture Manager".
+
+The textures are now generated from a texture map. They are extracted from a tileset, containing a set of the default texture (the green grass and its variants here), 
+a set of other ground textures (like yellow grass, dirt and their variants), and some transition textures (3 in my tileset, but you can add as many of them as you like). The last of them are textures with alpha component, so you can see another texture throught it. The number of variants and the drop rate for each texture is manageable in the "Texture Manager" script.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/196054308-95bde081-22b8-4082-8cf0-4381f96ea905.png"></p>
+<p align="center">the texture map</p>
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/196054360-642a2046-61bf-4719-827a-9ecd84e9f98e.png"></p>
+<p align="center">and the terrain generated from it</p>
+
+Une fois le terrain généré, il est possible de sélectionner les tuiles une par une et de changer l'orientation de la texture, ou d'y appliquer une variante aléatoire de la texture qui s'y trouve. Pour changer le type de sol, le meilleur moyen est encore de modifier directement la texture map.
+
+Once the terrain is generated, you can select tiles one by one, and change their texture rotation or apply a corresponding variant. If you want to change the ground texture, just change the texture map.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/196054599-ba394e07-1633-4352-8d30-c3115a476329.gif"></p>
+<p align="center">the new per tile options</p>
+
+Enfin, on peut manuellement fusionner l'intégralité des meshs des tuiles en un seul, sauvegardé dans les dossiers du projet. Cela permet dans un premier temps de modifier le terrain à la main si besoin, en rajoutant des détails, en modifiant des textures etc... Puis on fusionne le tout, et on obtient non seulement un gain conséquent de performances, mais également un mesh complet que l'on peut retoucher sur un logiciel de modélisation.
+
+Then, we can merge all the meshes manually, and save the result in the project files. So you can generate your terrain, modify some textures if needed, add details, and finally merge everything in a single mesh. You can edit this mesh later with your favorite 3D computer graphics software. Moreover, you can save a bunch of performance this way.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/196054890-6c6c855a-5013-4db8-b9ee-0867f8baf26f.gif"></p>
+<p align="center">the new meshes merging process</p>
+
+============
+Version 0.2
+============
 
 La gestion de l'application de textures sur le terrain généré a été ajoutée. Seul un fichier .png (ou autre extension d'image) est nécessaire pour texturer tout le sol. Si des imperfections sont visibles, il s'agit de problèmes liés à ma texture et non au mappage UV, que j'ai pris soin d'effectuer correctement. Je me concentre pour le moment plus sur la partie développement du level editor que sur la qualité graphique du rendu. De plus on peut observer des variations sur la texture d'herbe (la présence de fleurs). Ces variations sont pour le moment aléatoires, mais seront plus tard implémentées afin d'être générées selon une image en entrée ou en utilisant un bruit (pour simuler les parterres de fleurs par exemple).
 
