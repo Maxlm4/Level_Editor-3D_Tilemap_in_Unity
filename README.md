@@ -9,7 +9,41 @@ This Unity project is a work in progress, which code files are still confidentia
 A real time editor would be appropriate with this situation, but I know from experience I would spend too much time creating the level by hand in Unity. I prefer to draw it in pixelart and generate it, even if it means some afterwards polishing by hand or with Blender.
 
 =====================
-Latest : Version 0.3
+Latest : Version 0.4
+=====================
+
+Premier changement important de cette version, la ligne de rendue a été modifiée pour l'URP. En effet, étant donné la quantité colossale de post-processing requise pour créer des jeux HD-2D les plus beaux, HDRP s'est rapidement avéré être une mauvaise solution, car trop réaliste et donc pas assez stylisé, trop coûteux en performances, et trop peu personnalisable. Pour un même rendu, j'ai obtenu 180 fps sur URP contre 80 fps sur HDRP. De plus, la documentation sur URP semble être plus fournie que celle d'HDRP.
+La carte a été agrandie pour tester les performances du générateur sur des cartes de tailles envisageables dans un jeu. Ainsi, pour une carte de taille 50x5x100 blocs, le générateur met moins de 3 secondes pour créer le mesh et y appliquer les bonnes textures, ce qui est un temps plus que raisonnable comparé à d'autres générateurs que j'ai pu tester mettant environ 1 minutes pour générer une carte de taille similaire. Un mesh en forme de cuve a été rajouté sur la carte pour éviter les problèmes de fuites lumineuses.
+
+Important note before getting into the version news, the render pipeline has been changed for URP. The best HD-2D games require a lot of post-processing to look good, so I needed a render pipeline light in performance costs, easy to customize and no so realistic (stylised game art is often better in these cases). For the same render, I got 180 fps with URP, but only 80 fps with HDRP. Moreover, the URP documentation seems a little better.
+The map is now larger, because I needed to test the generator performances for the generation of a map with a real case size. For a 50x5x100 blocs map, the generator took 3 seconds, which is not so bad compared to the 60 seconds other generators I tested needed to generate a similar map. I added a cuve shaped mesh to avoid light bleeding on the terrain.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/200186185-4a05378c-4a44-4c83-b701-888b026ff531.png"></p>
+<p align="center">the new generated terrain</p>
+
+J'ai ensuite implémenté mon shader d'eau, et un script permettant de fusionner toutes les surfaces du même type d'eau pour accroître encore les performances. Seule la réflection planaire a été désactivée, car trop coûteuse en performances, non nécessaire pour avoir un visuel satisfaisant et impossible à implémenter tel quelle pour plusieurs surfaces d'eau. J'ai également testé l'ajout des mipmaps pour éviter les clignotements des textures au loin. Ils fonctionnent à merveille, sauf que mon atlas de texture actuel n'est pas d'une résolution suffisamment bonne pour obtenir un effet visuel acceptable. De plus, mon atlas possèdes toutes ses textures collées les unes aux autres, ce qui provoque des problèmes de normales sur les bords des faces de mon terrain. Cependant, la mise à jour de mon atlas ne faisant pas partie intégrante de l'éditeur de niveau, celle-ci est remise à plus tard. Pour le moment, les mipmaps ne seront pas utilisées dans cette vitrine pour ces raisons.
+
+Then, I added my personal water shader and a script to merge the water surfaces of the same type together to increase once more performances. I only disabled the planar reflection, because of its performance cost, its unnecesary visual addition, and the fact I can't do planar reflection for several water planes in the current shader state. I added mipmaps too to avoid texture flickering. They work wonderfully, but my texture atlas is not big enought to make it that beautiful, and the sub textures inside it are all stick next each other, so I can sometime see normal leaking on the mesh edges. But I'm not focusing on getting the best visual quality for now, so I will modify my texture atlas only in a while. For these reasons, I will not use mipmap in this showcase for a moment.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/200186830-e66991bb-4edc-439c-8b25-0a2442c61d1a.png"></p>
+<p align="center">water surfaces and mipmaps</p>
+
+Ensuite, j'ai créé un shader de skybox procédurale soumis à un cycle jour/nut, permettant de contrôler la couleurs de la skybox, de la lumière, des astres lumineux et l'apparition d'étoiles au fil du temps et de la luminosité ambiante. J'ai ajouté à cela une probe customisée pour refléter correctement la lumière sur la scène quasiment sans impact sur les performances. Les paramètres liés à la lumière, aux textures et aux reflections sont stockées dans un fichier au lieu du material directement pour permettre de les modifier depuis l'éditeur selon le niveau généré spécifiquement et pour potentiellement générer plusieurs ensembles de paramètres pour un même niveau, selon la météo par exemple.
+
+I then created a procedural skybox shader depending on a day/night cycle. This shader allow the sky, lights and celestial bodies colors, and the stars appearance along time and brightness. I added a custom probe to correctly reflect the lights on the scene nearly without any impact on performance. The light, textures and reflection settings are stored in a file and not in the material itself. Thanks to this technic, we can ajust the light settings in the editor depending on the level we created and save several settings to simulate the weather on this level.  
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/200187511-36906bea-b5ae-4f42-96a7-f8ebe5ff7ccb.gif"></p>
+<p align="center">the new day/night cycle with procedural skybox</p>
+
+Enfin, j'ai ajouté tout le post-processing nécessaire en qualité optimale (souvent le maximum) pour tester les performances (profondeur de champ, flou lumineux, occlusion ambiante, ajustement des couleurs, balance de blanc, HDR, brouillard exponentiel carré, vignettage). Celles-ci se sont avérées très bonnes pour une qualité visuelle plus que satisfaisante. L'éditeur de niveau permet donc de générer rapidement et efficacement un terrain et d'y appliquer les textures souhaitées d'après un dessin en pixelart, de gérer les lumières du niveau selon un cycle jour/nuit et la météo (ou non), et de placer des points d'eau sur le terrain généré.
+
+Finally, I added all the necessary post-processing in optimal quality (often maximal quality) to test performances (depth of field, bloom, ambiant occlusion, color ajustment, white balance, HDR, exponential squared fog, vignette). They seemed more than enough to me for that visual quality. Now, the editor allow us to generate a terrain and its texture from a pixelart, manage the level lighting, day/night cycle and weather systel (if needed), and set up water surfaces on the generated terrain.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/200188356-6ffca4d6-3b1c-4f69-8a47-62ecd604d681.gif"></p>
+<p align="center">final result with post-processing</p>
+
+=====================
+Version 0.3
 =====================
 
 Les textures sont désormais générées selon une image, la texture map. Elles sont extraites d'un tileset composé entre autre d'un set de textures par défaut (ici l'herbe verte et ses variations), de plusieurs variantes de sol (ici l'herbe jaune et la terre avec leurs variations) et des transitions entre deux textures (trois au maximum sur mon tileset, mais rien n'empêche d'en ajouter, le script peut en accepter autant que nécessaire). Les transitions sont des textures transparentes permettant de voir une autre texture de sol en dessous. Le nombre de variations de chaque texture ainsi que leurs chances d'apparition individuelles sont paramétrables dans le script "Texture Manager".
