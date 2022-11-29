@@ -9,7 +9,43 @@ This Unity project is a work in progress, which code files are still confidentia
 A real time editor would be appropriate with this situation, but I know from experience I would spend too much time creating the level by hand in Unity. I prefer to draw it in pixelart and generate it, even if it means some afterwards polishing by hand or with Blender.
 
 =====================
-Latest : Version 0.4
+Latest : Version 0.5
+=====================
+
+Dans cette version, j'ai ajouté 4 fonctionnalités au total. Trois d'entre elles varient en intensité et en coloration selon l'heure du cycle jour/nuit. La dernière est la possibilité d'ajouter un lens flare au soleil pour accentuer l'esthétisme d'une scène de beau temps. Rien d'incroyable ici, il s'agit simplement d'un test sur le système de lens flare d'Unity.
+
+In this version I added 4 new features in the editor. Three of them will vary in intensty and color depending on the time of day. The last one is the possibility to add a lens flare to the sunny days scenes. Nothing impressive here, this was just a test on the Unity lens flare component.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/204402002-f431214a-d6db-49e6-836c-1b6a2da1465b.png"></p>
+<p align="center">the lens flare system</p>
+
+Première fonctionnalité vraiment importante : l'ajout de nuages sur la skybox. Ces nuages sont générés d'après une texture2D, et sont soumis à l'influence du vent. Ils se déforment légèrement avec le temps, et on peut au choix choisir l'épaisseur des nuages ainsi que leur quantité dans le ciel. Ces nuages, lorsque placés devant des étoiles ou des astres célestes, les cache au moins partiellement, selon l'épaisseur de nuage escomptée.
+
+First impactful feature : the addition of clouds on the skybox. The clouds are generated from a 2D texture, and are moving depending on the wind direction. They slightly deform themselves along time, and we can choose their thickness and their quantity in the sky.They hide (partially or entirely) the stars and the celestial bodies behing them, depending on the wanted thickness.
+
+<p align="center"><img src=https://user-images.githubusercontent.com/36695417/204402791-174bc814-cf47-431d-bd59-fa643b1a8653.png></p>
+<p align="center">the new clouds</p>
+
+Deuxième fonctionnalité : l'ajout d'un volume de brouillard. Par soucis de performance, j'ai totalement abandonné l'idée d'utiliser un vrai brouillard volumétrique et des lumières volumétriques, pour me concentrer sur des solutions moins coûteuses mais tout aussi esthétiques. Le volume de brouillard utilisé est l'adaptation d'une asset trouvée sur internet. Il suffit de placer un mesh et de lui associer le shader de brouillard pour que le brouillard se générère à l'intérieur du mesh. Le brouillard original est généré en utilisant une combinaison de bruits 3D et 2D. Pour accentuer la précision du brouillard, il est possible de modifier le nombre de couches qui ensemble construiront le brouillard, sachant qu'un minimum de trois couches est nécessaire, et qu'à partir de 10, il n'est pas nécessaire d'augmenter le nombre de couches car le ratio aspect visuel / performance devient mauvais. Évidemment, plus il y a de couches, moins bonnes sont les performances. J'ai simplifié le shader pour aisément  modifier la couleur, l'épaisseur et la quantité de brouillard, et permettre son déplacement au gré du vent et sa déformation à l'instar des nuages. Le brouillard est soumis à deux contraintes, il n'est pas affecté par la lumière extérieure, et devient invisible lorsque la caméra entre dans le volume.
+
+Second feature : the addition of a volume fog. For performance purpose, I forgot the idea of using a real volumetric fog and volumetric lights. So I focused on cheaper and as beautiful technics. The volume fog I used is an adaptation of an asset found on the internet. All we need is to set the fog material to a mesh to generate fog everywhere inside the mesh. The original fog system is generated from a 2D and 3D noises combination. We can increase the fog realism by increasing the number of samples that will compose the fog. A minimum a 3 samples is required, but it is unnecessary to go beyond 10 samples, because the visual aspect / performance ratio is starting to be bad. Obviously, the less samples, the better performances. I simplified the shader to easily change the fog color, thickness and quantity, and allow wind impact and deformation as the clouds do. The fog is under two constraints, it is not affected by external light, and it dissapears when the camera enters the volume.
+
+<p align="center"><img src=https://user-images.githubusercontent.com/36695417/204403974-a314eeef-6f8c-47d9-87c1-089d39b8b1af.png></p>
+<p align="center">a volume fog above the water surface</p>
+
+Dernière fonctionnalité : les rayons lumineux (ou god rays). Comme cité au dessus, aucune lumière volumétrique n'a été utilisée ici par soucis de performances. J'ai donc ajouté un système de particules personnalisable similaire à celui utilisé dans beaucoup de jeux avec des graphismes semblables (dont Octopath Traveler) pour simuler les rayons lumineux.
+
+Last feature : the light shafts (or god rays). As I said before, there is no volumetric light system in this project for performance purpose. So I chose a customizable particle system similar to the ones used in many videogames with the same graphics (Octopath Traveler for instance) to simulate the light shafts.
+
+<p align="center"><img src=https://user-images.githubusercontent.com/36695417/204406200-45e1df6b-2ae3-406b-8422-1b3db6fab8d9.png></p>
+<p align="center">the god ray system</p>
+
+Les tests de performances nous montrent toujours d'aussi bons résultats. Je suis aujourd'hui au dessus de 130 fps stables en moyenne avec tous les derniers ajouts sur ma machine la moins performannte avec les graphismes poussés au maximum. Je vise 2 x 60 fps pour un niveau généré, sans aucun script lié au gameplay dans la scène, afin d'avoir une marge confortable pour les futurs ajouts.
+
+The perfomance tests are still showing great results. My project runs at 130 fps on my worst computer without any fps drop and with optimal quality. My goal is to keep getting more than 2 x 60 fps for a generated level without any gameplay script. So that I can have a confortable room for future add-ons.
+
+=====================
+Version 0.4
 =====================
 
 Premier changement important de cette version, la ligne de rendue a été modifiée pour l'URP. En effet, étant donné la quantité colossale de post-processing requise pour créer des jeux HD-2D les plus beaux, HDRP s'est rapidement avéré être une mauvaise solution, car trop réaliste et donc pas assez stylisé, trop coûteux en performances, et trop peu personnalisable. Pour un même rendu, j'ai obtenu 180 fps sur URP contre 80 fps sur HDRP. De plus, la documentation sur URP semble être plus fournie que celle d'HDRP.
