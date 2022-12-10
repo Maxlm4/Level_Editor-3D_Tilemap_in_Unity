@@ -9,7 +9,29 @@ This Unity project is a work in progress, which code files are still confidentia
 A real time editor would be appropriate with this situation, but I know from experience I would spend too much time creating the level by hand in Unity. I prefer to draw it in pixelart and generate it, even if it means some afterwards polishing by hand or with Blender.
 
 =====================
-Latest : Version 0.5
+Latest : Version 0.6
+=====================
+
+Dans cette version, je me suis concentré sur l'ajout de divers systèmes de particules ajoutant de l'ambiance aux niveaux. Le premier système est l'ajout de cascades assorties aux points d'eau. La cascade en elle-même est un shader similaire à celui des points d'eau mais en plus simple et avec l'ajout de mousse. A ce shader sont associés quatre systèmes de particules, un premier visant à simuler des gouttes d'eau au point de départ de la cascade, un autre simulant les éclaboussures dues à la force exercée par la cascade sur le point d'eau, un autre simulant les vagues à la surface du point d'eau, et un dernier génère un léger brouillard autours du point d'impact.
+
+In this version, I focused on adding particles systems to increase the ambiance on each level. The first system is the new waterfalls, that look like the water points. The waterfall has a shader similar to the one used for the water points, but more simple and with foam added. To this shader, four particle system help increasing the realism of the waterfall : one for water sprinkles falling from the waterfall top, one for the the sprinkles where the waterfall hits the water plane, one for the waves and a last one for a light fog around the impact point.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/206864548-a08a2d75-651a-4e3f-9bb1-ad1c1abc0a3a.gif"></p>
+<p align="center">the new waterfall</p>
+
+
+Ensuite j'ai ajouté deux systèmes de particules pour simuler la météo. Le premier permet de simuler la pluie, lorsque le second simule des particules de poussière visible lors des jours ensoleillés. La liste de ce genre de système de particules est non exhaustive et extensible.
+
+Then, I added two particle systems to simulated weather. The first one looks like the rain, while the second one looks like dust visible on sunny days. The list of this kind of particle systems is not exhaustive and can be completed.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/206865650-efd4aa6a-ecff-4bab-b519-6b30e6908cfb.png"></p>
+<p align="center">the sunny dusts</p>
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/206865438-38ff4987-0224-4d0d-83da-6b6793d6e088.gif"></p>
+<p align="center">the rain</p>
+
+=====================
+Version 0.5
 =====================
 
 Dans cette version, j'ai ajouté 4 fonctionnalités au total. Trois d'entre elles varient en intensité et en coloration selon l'heure du cycle jour/nuit. La dernière est la possibilité d'ajouter un lens flare au soleil pour accentuer l'esthétisme d'une scène de beau temps. Rien d'incroyable ici, il s'agit simplement d'un test sur le système de lens flare d'Unity.
