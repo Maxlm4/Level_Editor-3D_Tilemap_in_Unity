@@ -9,7 +9,33 @@ This Unity project is a work in progress, which code files are still confidentia
 A real time editor would be appropriate with this situation, but I know from experience I would spend too much time creating the level by hand in Unity. I prefer to draw it in pixelart and generate it, even if it means some afterwards polishing by hand or with Blender.
 
 =====================
-Latest : Version 0.6
+Latest : Version 0.7
+=====================
+
+Cette version introduit la génération de foliage, exploitant le même principe que la génération de mesh et de texture: j'utilise une height map en pixelart. Plus un pixel est clair, moins le foliage sera épais. Un pixel blanc représente une absence totale de foliage, quand un pixel noir représente un foliage très épais. Pour ce faire, j'associe à chaque niveau (chaque couleur) un ensemble de prefabs de foliage, triés selon l'épaisseur du foliage. L'algorithme de génération choisit au hasard un prefab parmi ceux du niveau de foliage associé à la couleur du pixel à une position donnée.
+
+This version introduces the foliage generation. it exploits the same principle as the terrain mesh and texture generation: I use a height map in pixelart. The darker a pixel is, the thicker the associated foliage is. A white pixel indicates no foliage at this position, while a black pixel indicates the thicker foliage possible. In order to do that, I associate each pixel color, or each foliage level, to a set of prefabs ordered by thickness. The algorithm randomly chooses a prefab in the corresponding level associated with the pixel color at the given position.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/213882726-609c4200-0475-456b-8759-4873a6fc2c94.png"></p>
+<p align="center">the foliage map</p>
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/213881597-8c43de29-002c-4bb3-a2be-bbf5a19e9587.png"></p>
+<p align="center">the foliage generated</p>
+
+Comme on peut le voir, on a différents niveaux de foliages générés divisés par catégories sur l'image ci-dessous. On voit aussi qu'on a deux types de foliage différents sur le plus haut niveau, et que la fleur a moins de chances d'apparaître que les hautes herbes.
+
+As we can see, there are several foliage levels generated divided in categories on the bottom picture. We can also see two different prefabs on the highest level, and the flower having less odds to appear than the tall grass.
+
+<p align="center"><img src="https://user-images.githubusercontent.com/36695417/213881986-287bb1b2-c96a-4e67-b042-928857bfdea9.png"></p>
+<p align="center">the foliage approximately sorted by level</p>
+
+J'ai testé deux solutions pour générer le foliage de façon la plus optimisée possible : en utilisant des SpriteRenderers, ou en utilisant des MeshFilters.
+La solution des SpriteRenderers permettait d'avoir moins de triangles à afficher pour le GPU et d'utiliser une seule instance de shader exploitant plusieurs textures en même temps. Cependant, bien que les fps étaient raisonnables, ils variaient beaucoup au fil du temps et résultaient en un nombre plus grand de batchs. Au contraire, les MeshFilters demandaient d'afficher plus de triangles, mais les fps obtenus sont bien plus stables une fois tous les meshs fusionnés. L'inconvénient étant que cette solution requiert la création d'un atlas de texture pour le foliage, ainsi que d'un script pour simuler le vent plutôt que de passer par un shader. Cette dernière solution a été celle retenue grâce à son impressionnante stabilité et des fps suffisemment élevés.
+
+I tried two solutions to generate the foliage optimizely : using SpriteRenderers or using MeshFilters. The first solution allowed to have less tris to display for the GPU and to use a single material instance with multiple textures at the same time. This solution gave reasonnable fps but with a very unstable framerate and high batches count. Meanwhile, the second solution proved great fps and more stability once all meshes merged while asking to display more tris. The drawback is this solution requires the creation of a texture atlas for the foliage and a script to simulate the wind because a shader can't handle it with a single mesh of that kind. This last solution was the one chosen thanks to its amazing stability and its satisfying fps.
+
+=====================
+Version 0.6
 =====================
 
 Dans cette version, je me suis concentré sur l'ajout de divers systèmes de particules ajoutant de l'ambiance aux niveaux. Le premier système est l'ajout de cascades assorties aux points d'eau. La cascade en elle-même est un shader similaire à celui des points d'eau mais en plus simple et avec l'ajout de mousse. A ce shader sont associés quatre systèmes de particules, un premier visant à simuler des gouttes d'eau au point de départ de la cascade, un autre simulant les éclaboussures dues à la force exercée par la cascade sur le point d'eau, un autre simulant les vagues à la surface du point d'eau, et un dernier génère un léger brouillard autours du point d'impact.
